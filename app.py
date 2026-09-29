@@ -2,209 +2,201 @@ import streamlit as st
 from fpdf import FPDF
 from datetime import datetime
 
-st.set_page_config(page_title="ACC - Banan WIR System", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="ACC - Banan WIR Official System", page_icon="🏗️", layout="wide")
 
 st.markdown("""
     <style>
-    .main-title {
-        font-size: 26px;
-        font-weight: bold;
-        color: #1E3A8A;
-        text-align: center;
-        margin-bottom: 5px;
-    }
-    .sub-title {
-        font-size: 18px;
-        color: #374151;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .section-header {
-        background-color: #1E3A8A;
+    .wir-header {
+        background-color: #1a365d;
         color: white;
-        padding: 6px 12px;
+        padding: 12px;
+        text-align: center;
         font-weight: bold;
-        border-radius: 4px;
-        margin-top: 15px;
+        font-size: 22px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .sec-title {
+        background-color: #2b6cb0;
+        color: white;
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 10px;
         margin-bottom: 10px;
+        border-radius: 3px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">ALEXANDRIA CONSTRUCTION CO. (ACC)</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Banan Al-Riyadh Project (Package BB1.2) - Work Inspection Request (WIR)</div>', unsafe_allow_html=True)
+st.markdown('<div class="wir-header">ALEXANDRIA CONSTRUCTION CO. (ACC)<br><span style="font-size: 16px; font-weight: normal;">Banan Al-Riyadh Project (BB1.2) - Work Inspection Request (WIR)</span></div>', unsafe_allow_html=True)
 
-with st.form("wir_full_form"):
-    st.markdown('<div class="section-header">1. General Project & Request Information</div>', unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        wir_no = st.text_input("WIR Reference No.", value="ACC-BB1.2-WIR-001")
-        date_raised = st.date_input("Inspection Date", value=datetime.now())
-    with c2:
-        time_raised = st.time_input("Inspection Time", value=datetime.now().time())
-        subcontractor = st.text_input("Subcontractor Name", value="Civil Contracting Co.")
-    with c3:
-        discipline = st.selectbox("Discipline", ["Civil / Structural", "Architectural", "MEP", "Infrastructure"])
-        itp_ref = st.text_input("ITP Ref / Stage Code", value="ITP-03-01 (Concrete)")
+with st.form("wir_official_form"):
+    st.markdown('<div class="sec-title">1. GENERAL & PROJECT INFORMATION</div>', unsafe_allow_html=True)
+    f1, f2, f3 = st.columns(3)
+    with f1:
+        wir_no = st.text_input("WIR No.", value="ACC-BB1.2-WIR-001")
+        project_name = st.text_input("Project Name", value="Banan Al-Riyadh (Package BB1.2)")
+    with f2:
+        date_inp = st.date_input("Date", value=datetime.now())
+        contractor = st.text_input("Main Contractor", value="Alexandria Construction Co. (ACC)")
+    with f3:
+        time_inp = st.time_input("Time", value=datetime.now().time())
+        subcontractor = st.text_input("Subcontractor", value="Civil Works Subcontractor")
 
-    st.markdown('<div class="section-header">2. Location & Element Details</div>', unsafe_allow_html=True)
-    c4, c5, c6 = st.columns(3)
-    with c4:
-        building_no = st.text_input("Building / Zone No.", value="B20")
+    st.markdown('<div class="sec-title">2. LOCATION & INSPECTION SCOPE</div>', unsafe_allow_html=True)
+    l1, l2, l3 = st.columns(3)
+    with l1:
+        building = st.text_input("Building / Zone", value="B20")
+        floor = st.text_input("Floor / Level", value="GF")
+    with l2:
         model = st.text_input("Model / Sector", value="R2")
-    with c5:
-        floor = st.text_input("Floor / Level", value="Ground Floor (GF)")
-        unit = st.text_input("Unit / Apartment No.", value="Apt 01")
-    with c6:
-        grid_axes = st.text_input("Grid Lines / Axes", value="Axes A-D / 1-5")
-        drawing_no = st.text_input("Approved Drawing Ref & Rev", value="BANAN-STR-DWG-102 Rev.0")
+        unit = st.text_input("Unit / Apt", value="Apt 01")
+    with l3:
+        space_area = st.text_input("Specific Location / Axis", value="Axes A-D / 1-5")
+        drawing_ref = st.text_input("Drawing Ref & Rev", value="BANAN-STR-DWG-102 Rev.0")
 
-    st.markdown('<div class="section-header">3. Inspection Details & Description</div>', unsafe_allow_html=True)
-    description = st.text_area("Detailed Description of Work to be Inspected", 
-                               value="Inspection of reinforcement steel, formwork shuttering, and cleanliness prior to concrete casting for GF columns.")
-    
-    c7, c8 = st.columns(2)
-    with c7:
-        activity_id = st.text_input("Activity ID (Primavera/Schedule)", value="ACT-CIV-2026-089")
-    with c8:
-        quality_spec = st.text_input("Specification Ref / Standard", value="Spec 033000 - Cast-in-Place Concrete")
+    st.markdown('<div class="sec-title">3. WORK DETAILS & SPECIFICATIONS</div>', unsafe_allow_html=True)
+    discipline = st.selectbox("Discipline / Trade", ["Civil / Structural", "Architectural", "MEP - Electrical", "MEP - Plumbing"])
+    itp_code = st.text_input("ITP Reference Code", value="ITP-03-01")
+    spec_ref = st.text_input("Specification Reference", value="Spec Section 033000 - Cast-in-Place Concrete")
+    description = st.text_area("Description of Inspected Work", value="Inspection of reinforcement steel, formwork shuttering, and cleanliness prior to concrete casting for GF columns.")
 
-    st.markdown('<div class="section-header">4. Quality & Verification Checklist</div>', unsafe_allow_html=True)
-    ck1 = st.checkbox("Approved Shop Drawings & Bar Bending Schedules (BBS) available on site", value=True)
-    ck2 = st.checkbox("Materials inspected, approved, and matching project specifications", value=True)
-    ck3 = st.checkbox("Levels, alignment, and structural dimensions verified", value=True)
-    ck4 = st.checkbox("Site cleanliness and safety requirements fulfilled", value=True)
+    st.markdown('<div class="sec-title">4. QUALITY CHECKLIST & VERIFICATION</div>', unsafe_allow_html=True)
+    c1 = st.checkbox("Work completed in accordance with approved shop drawings", value=True)
+    c2 = st.checkbox("Materials used are approved and compliant with specifications", value=True)
+    c3 = st.checkbox("Previous non-conformances (if any) closed satisfactorily", value=True)
+    c4 = st.checkbox("Safety and housekeeping standards maintained on site", value=True)
 
-    st.markdown('<div class="section-header">5. Inspection Result & Comments</div>', unsafe_allow_html=True)
-    status = st.radio("Inspection Status / Recommendation", ["Approved (A)", "Approved with Comments (B)", "Rejected (C)"], index=0)
-    comments = st.text_area("Consultant / Inspector Comments (if any)", value="Approved to proceed with casting. Ensure proper vibration during pouring.")
+    st.markdown('<div class="sec-title">5. CONSULTANT / INSPECTOR RESPONSE</div>', unsafe_allow_html=True)
+    status = st.radio("Inspection Decision", ["Approved (A)", "Approved as Noted (B)", "Revise & Resubmit (C)", "Rejected (D)"], index=0)
+    comments = st.text_area("Consultant Remarks / Memos", value="Approved to proceed with concrete pouring. Ensure proper compaction and curing.")
 
-    st.markdown('<div class="section-header">6. Signatures & Personnel</div>', unsafe_allow_html=True)
-    c9, c10 = st.columns(2)
-    with c9:
-        site_engineer = st.text_input("ACC Site Engineer", value="Eng. Mahmoud Amin")
-        qc_engineer = st.text_input("ACC Quality Manager / QC Engineer", value="Eng. Khaled Samy")
-    with c10:
-        consultant_eng = st.text_input("Consultant Engineer Name", value="Eng. Hany Mohamed")
+    st.markdown('<div class="sec-title">6. APPROVAL SIGNATURES</div>', unsafe_allow_html=True)
+    s1, s2, s3 = st.columns(3)
+    with s1:
+        site_eng = st.text_input("ACC Site Engineer", value="Eng. Mahmoud Amin")
+    with s2:
+        qc_eng = st.text_input("ACC Quality Manager", value="Eng. Khaled Samy")
+    with s3:
+        consultant = st.text_input("Consultant Engineer", value="Eng. Hany Mohamed")
 
-    submit_btn = st.form_submit_button("🔨 Generate Official WIR PDF Report")
+    submit = st.form_submit_button("📄 Generate Official Form PDF")
 
-if submit_btn:
+if submit:
     try:
-        class WIR_PDF(FPDF):
+        class OfficialWIRPDF(FPDF):
             def header(self):
-                self.set_fill_color(30, 58, 138)
-                self.rect(10, 8, 190, 18, 'F')
+                # Top Navy Banner
+                self.set_fill_color(26, 54, 93)
+                self.rect(10, 10, 190, 22, 'F')
                 self.set_text_color(255, 255, 255)
-                self.set_font("Arial", 'B', 12)
-                self.set_xy(10, 12)
-                self.cell(190, 10, "ALEXANDRIA CONSTRUCTION CO. (ACC) - QUALITY SYSTEM", align='C')
-                self.ln(12)
+                self.set_font("Arial", 'B', 14)
+                self.set_xy(10, 13)
+                self.cell(190, 8, "ALEXANDRIA CONSTRUCTION CO. (ACC)", align='C', ln=True)
+                self.set_font("Arial", '', 10)
+                self.cell(190, 6, "BANAN AL-RIYADH PROJECT (PACKAGE BB1.2) - QUALITY MANAGEMENT SYSTEM", align='C')
+                self.ln(10)
 
             def footer(self):
                 self.set_y(-15)
                 self.set_font("Arial", 'I', 8)
-                self.set_text_color(128, 128, 128)
-                self.cell(0, 10, f"Banan Al-Riyadh Project (BB1.2) | WIR Ref: {wir_no} | Page {self.page_no()}", align='C')
+                self.set_text_color(100, 100, 100)
+                self.cell(0, 10, f"Form Ref: ACC-BB1.2-WIR | Generated for WIR: {wir_no} | Page {self.page_no()}", align='C')
 
-        pdf = WIR_PDF()
+        pdf = OfficialWIRPDF()
         pdf.add_page()
         pdf.set_auto_page_break(auto=True, margin=15)
 
-        pdf.set_text_color(0, 0, 0)
+        # Form Title Box
+        pdf.set_fill_color(226, 232, 240)
+        pdf.set_text_color(26, 54, 93)
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(0, 8, "WORK INSPECTION REQUEST (WIR)", ln=True, align='C')
-        pdf.ln(3)
+        pdf.cell(190, 8, "WORK INSPECTION REQUEST (WIR)", 1, 1, 'C', True)
+        pdf.ln(2)
 
-        def make_table_header(title):
-            pdf.set_fill_color(220, 230, 242)
-            pdf.set_font("Arial", 'B', 10)
-            pdf.set_text_color(30, 58, 138)
-            pdf.cell(190, 7, f"  {title}", 1, 1, 'L', True)
+        def draw_sec_hdr(title):
+            pdf.set_fill_color(43, 108, 176)
+            pdf.set_text_color(255, 255, 255)
+            pdf.set_font("Arial", 'B', 9.5)
+            pdf.cell(190, 6, f"  {title}", 1, 1, 'L', True)
             pdf.set_text_color(0, 0, 0)
 
-        def cell_pair(l1, v1, l2, v2, w1=35, w2=60, w3=35, w4=60):
-            pdf.set_font("Arial", 'B', 9)
-            pdf.set_fill_color(245, 247, 250)
-            pdf.cell(w1, 6, str(l1), 1, 0, 'L', True)
-            pdf.set_font("Arial", '', 9)
-            pdf.cell(w2, 6, str(v1), 1, 0, 'L')
-            pdf.set_font("Arial", 'B', 9)
-            pdf.cell(w3, 6, str(l2), 1, 0, 'L', True)
-            pdf.set_font("Arial", '', 9)
-            pdf.cell(w4, 6, str(v2), 1, 1, 'L')
+        def draw_field(lbl1, val1, lbl2, val2):
+            pdf.set_font("Arial", 'B', 8.5)
+            pdf.set_fill_color(240, 244, 248)
+            pdf.cell(35, 6, str(lbl1), 1, 0, 'L', True)
+            pdf.set_font("Arial", '', 8.5)
+            pdf.cell(60, 6, str(val1), 1, 0, 'L')
+            pdf.set_font("Arial", 'B', 8.5)
+            pdf.cell(35, 6, str(lbl2), 1, 0, 'L', True)
+            pdf.set_font("Arial", '', 8.5)
+            pdf.cell(60, 6, str(val2), 1, 1, 'L')
 
-        # Section 1
-        make_table_header("1. GENERAL INFORMATION")
-        cell_pair("WIR Ref No:", wir_no, "Date / Time:", f"{date_raised} @ {time_raised}")
-        cell_pair("Discipline:", discipline, "Subcontractor:", subcontractor)
-        cell_pair("ITP Ref Code:", itp_ref, "Activity ID:", activity_id)
-        pdf.ln(3)
+        # 1. Project Info
+        draw_sec_hdr("1. GENERAL PROJECT & REQUEST INFORMATION")
+        draw_field("WIR Reference:", wir_no, "Date / Time:", f"{date_inp} {time_inp}")
+        draw_field("Project Name:", "Banan Al-Riyadh BB1.2", "Main Contractor:", contractor)
+        draw_field("Discipline:", discipline, "Subcontractor:", subcontractor)
+        pdf.ln(2)
 
-        # Section 2
-        make_table_header("2. LOCATION & DRAWING REFERENCE")
-        cell_pair("Building / Zone:", building_no, "Model / Sector:", model)
-        cell_pair("Floor / Level:", floor, "Unit / Apt No:", unit)
-        cell_pair("Grid Axes:", grid_axes, "Drawing Ref:", drawing_no)
-        pdf.ln(3)
+        # 2. Location
+        draw_sec_hdr("2. LOCATION & DRAWING DETAILS")
+        draw_field("Building / Zone:", building, "Model / Sector:", model)
+        draw_field("Floor / Level:", floor, "Unit / Apartment:", unit)
+        draw_field("Location / Axes:", space_area, "Drawing Ref & Rev:", drawing_ref)
+        pdf.ln(2)
 
-        # Section 3
-        make_table_header("3. WORK DESCRIPTION & SPECIFICATION")
-        pdf.set_font("Arial", 'B', 9)
-        pdf.set_fill_color(245, 247, 250)
-        pdf.cell(40, 6, "Specification Ref:", 1, 0, 'L', True)
-        pdf.set_font("Arial", '', 9)
-        pdf.cell(150, 6, str(quality_spec), 1, 1, 'L')
-        pdf.set_font("Arial", 'B', 9)
-        pdf.cell(190, 6, "Description of Inspected Work:", 1, 1, 'L', True)
-        pdf.set_font("Arial", '', 9)
-        pdf.multi_cell(190, 5, str(description), 1, 'L')
-        pdf.ln(3)
-
-        # Section 4
-        make_table_header("4. VERIFICATION CHECKLIST")
-        pdf.set_font("Arial", '', 8.5)
-        pdf.cell(190, 5, f"[{'X' if ck1 else ' '}] Approved Shop Drawings & BBS available on site", 1, 1, 'L')
-        pdf.cell(190, 5, f"[{'X' if ck2 else ' '}] Materials inspected, approved, and matching project specifications", 1, 1, 'L')
-        pdf.cell(190, 5, f"[{'X' if ck3 else ' '}] Levels, alignment, and structural dimensions verified", 1, 1, 'L')
-        pdf.cell(190, 5, f"[{'X' if ck4 else ' '}] Site cleanliness and safety requirements fulfilled", 1, 1, 'L')
-        pdf.ln(3)
-
-        # Section 5
-        make_table_header("5. INSPECTION STATUS & CONSULTANT COMMENTS")
-        pdf.set_font("Arial", 'B', 10)
-        status_text = f"RECOMMENDATION STATUS: {status}"
-        pdf.cell(190, 7, status_text, 1, 1, 'C', False)
-        pdf.set_font("Arial", 'B', 9)
-        pdf.set_fill_color(245, 247, 250)
-        pdf.cell(190, 6, "Consultant Remarks / Instructions:", 1, 1, 'L', True)
-        pdf.set_font("Arial", '', 9)
-        pdf.multi_cell(190, 5, str(comments) if comments else "N/A", 1, 'L')
-        pdf.ln(3)
-
-        # Section 6
-        make_table_header("6. SIGNATURES & APPROVALS")
+        # 3. Work Details
+        draw_sec_hdr("3. INSPECTION SCOPE & SPECIFICATIONS")
+        draw_field("ITP Code:", itp_code, "Specification Ref:", spec_ref)
         pdf.set_font("Arial", 'B', 8.5)
-        pdf.cell(63, 6, "ACC Site Engineer", 1, 0, 'C', True)
-        pdf.cell(63, 6, "ACC Quality Engineer", 1, 0, 'C', True)
-        pdf.cell(64, 6, "Consultant Engineer", 1, 1, 'C', True)
+        pdf.set_fill_color(240, 244, 248)
+        pdf.cell(190, 5, "Detailed Description of Inspected Work:", 1, 1, 'L', True)
         pdf.set_font("Arial", '', 8.5)
-        pdf.cell(63, 10, f"Name: {site_engineer}\nSign: _____________", 1, 0, 'C')
-        pdf.cell(63, 10, f"Name: {qc_engineer}\nSign: _____________", 1, 0, 'C')
-        pdf.cell(64, 10, f"Name: {consultant_eng}\nSign: _____________", 1, 1, 'C')
+        pdf.multi_cell(190, 5, str(description), 1, 'L')
+        pdf.ln(2)
 
-        # Safe PDF Output Encoding
+        # 4. Checklist
+        draw_sec_hdr("4. QUALITY CONTROL CHECKLIST")
+        pdf.set_font("Arial", '', 8)
+        pdf.cell(190, 5, f"  [{'X' if c1 else ' '}] Work completed in accordance with approved shop drawings and BBS", 1, 1, 'L')
+        pdf.cell(190, 5, f"  [{'X' if c2 else ' '}] Materials used are approved and compliant with project specifications", 1, 1, 'L')
+        pdf.cell(190, 5, f"  [{'X' if c3 else ' '}] Previous non-conformances / observations closed satisfactorily", 1, 1, 'L')
+        pdf.cell(190, 5, f"  [{'X' if c4 else ' '}] Safety and housekeeping standards maintained on site", 1, 1, 'L')
+        pdf.ln(2)
+
+        # 5. Decision & Remarks
+        draw_sec_hdr("5. CONSULTANT / INSPECTOR DECISION")
+        pdf.set_font("Arial", 'B', 9.5)
+        pdf.cell(190, 6, f"  STATUS: {status}", 1, 1, 'L')
+        pdf.set_font("Arial", 'B', 8.5)
+        pdf.set_fill_color(240, 244, 248)
+        pdf.cell(190, 5, "Consultant Remarks / Instructions:", 1, 1, 'L', True)
+        pdf.set_font("Arial", '', 8.5)
+        pdf.multi_cell(190, 5, str(comments) if comments else "N/A", 1, 'L')
+        pdf.ln(2)
+
+        # 6. Signatures
+        draw_sec_hdr("6. SIGNATURES & APPROVAL BLOCK")
+        pdf.set_font("Arial", 'B', 8)
+        pdf.set_fill_color(240, 244, 248)
+        pdf.cell(63, 5, "ACC Site Engineer", 1, 0, 'C', True)
+        pdf.cell(63, 5, "ACC Quality Engineer / Manager", 1, 0, 'C', True)
+        pdf.cell(64, 5, "Consultant Engineer", 1, 1, 'C', True)
+        pdf.set_font("Arial", '', 8)
+        pdf.cell(63, 12, f"Name: {site_eng}\n\nSign: __________________", 1, 0, 'L')
+        pdf.cell(63, 12, f"Name: {qc_eng}\n\nSign: __________________", 1, 0, 'L')
+        pdf.cell(64, 12, f"Name: {consultant}\n\nSign: __________________", 1, 1, 'L')
+
         pdf_raw = pdf.output(dest='S')
-        if isinstance(pdf_raw, str):
-            pdf_bytes = pdf_raw.encode('latin-1', 'replace')
-        else:
-            pdf_bytes = bytes(pdf_raw)
+        pdf_bytes = pdf_raw.encode('latin-1', 'replace') if isinstance(pdf_raw, str) else bytes(pdf_raw)
 
-        st.success("✅ WIR Report generated successfully with full project fields!")
+        st.success("✅ Official WIR Form PDF generated successfully!")
         st.download_button(
             label="📥 Download Official WIR PDF Report",
             data=pdf_bytes,
-            file_name=f"{wir_no}.pdf",
+            file_name=f"{wir_no}_Official_WIR.pdf",
             mime="application/pdf"
         )
     except Exception as e:
