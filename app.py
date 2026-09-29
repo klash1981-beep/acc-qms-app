@@ -6,7 +6,7 @@ import io
 st.set_page_config(page_title="ACC - Banan WIR Official System", page_icon="🏗️", layout="wide")
 
 st.title("ALEXANDRIA CONSTRUCTION CO. (ACC)")
-st.subtitle("Banan Al-Riyadh Project (BB1.2) — Work Inspection Request")
+st.subheader("Banan Al-Riyadh Project (BB1.2) - Work Inspection Request")
 
 # نموذج إدخال البيانات
 with st.form("wir_exact_form"):
@@ -24,7 +24,7 @@ with st.form("wir_exact_form"):
 
     description = st.text_area("Description of Inspected Work", value="Inspection of reinforcement steel and formwork shuttering for GF columns.")
     
-    submit = st.form_submit_button("📑 تعبئة النموذج واستخراج الملف الأصلي")
+    submit = st.form_submit_button("📑 تعبئة النموذج واستخرج الملف الأصلي")
 
 if submit:
     try:
@@ -32,7 +32,7 @@ if submit:
         wb = openpyxl.load_workbook("wir_template.xlsx", keep_vba=True)
         sheet = wb.active
 
-        # كتابة البيانات في الخلايا المحددة بحسب القالب الأصلي (عدّل مراجع الخلايا حسب شيت الإكسيل)
+        # كتابة البيانات في الخلايا المحددة بحسب القالب الأصلي
         sheet['C4'] = wir_no
         sheet['C5'] = str(date_val)
         sheet['C6'] = building
@@ -56,4 +56,4 @@ if submit:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     except Exception as e:
-        st.error(f"خطأ في الوصول إلى القالب: {e}. تأكد من رفع ملف 'wir_template.xlsx' إلى المستودع على GitHub.")
+        st.error(f"خطأ في الوصول إلى القالب: {e}. تأكد من رفع ملف 'wir_template.xlsx' إلى المستودع على GitHub بنفس الاسم.")
