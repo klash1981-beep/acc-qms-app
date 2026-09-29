@@ -32,7 +32,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">ALEXANDRIA CONSTRUCTION CO. (ACC)</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Banan Al-Riyadh Project (Package BB1.2) — Work Inspection Request (WIR)</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Banan Al-Riyadh Project (Package BB1.2) - Work Inspection Request (WIR)</div>', unsafe_allow_html=True)
 
 with st.form("wir_full_form"):
     st.markdown('<div class="section-header">1. General Project & Request Information</div>', unsafe_allow_html=True)
@@ -76,7 +76,7 @@ with st.form("wir_full_form"):
     ck4 = st.checkbox("Site cleanliness and safety requirements fulfilled", value=True)
 
     st.markdown('<div class="section-header">5. Inspection Result & Comments</div>', unsafe_allow_html=True)
-    status = st.radio("Inspection Status / Recommendation", ["Approved (A)", ["Approved with Comments (B)"], "Rejected (C)"], index=0)
+    status = st.radio("Inspection Status / Recommendation", ["Approved (A)", "Approved with Comments (B)", "Rejected (C)"], index=0)
     comments = st.text_area("Consultant / Inspector Comments (if any)", value="Approved to proceed with casting. Ensure proper vibration during pouring.")
 
     st.markdown('<div class="section-header">6. Signatures & Personnel</div>', unsafe_allow_html=True)
@@ -96,9 +96,9 @@ if submit_btn:
                 self.set_fill_color(30, 58, 138)
                 self.rect(10, 8, 190, 18, 'F')
                 self.set_text_color(255, 255, 255)
-                self.set_font("Arial", 'B', 13)
+                self.set_font("Arial", 'B', 12)
                 self.set_xy(10, 12)
-                self.cell(190, 10, "ALEXANDRIA CONSTRUCTION CO. (ACC) — QUALITY SYSTEM", align='C')
+                self.cell(190, 10, "ALEXANDRIA CONSTRUCTION CO. (ACC) - QUALITY SYSTEM", align='C')
                 self.ln(12)
 
             def footer(self):
@@ -193,7 +193,12 @@ if submit_btn:
         pdf.cell(63, 10, f"Name: {qc_engineer}\nSign: _____________", 1, 0, 'C')
         pdf.cell(64, 10, f"Name: {consultant_eng}\nSign: _____________", 1, 1, 'C')
 
-        pdf_bytes = pdf.output(dest='S').encode('latin1')
+        # Safe PDF Output Encoding
+        pdf_raw = pdf.output(dest='S')
+        if isinstance(pdf_raw, str):
+            pdf_bytes = pdf_raw.encode('latin-1', 'replace')
+        else:
+            pdf_bytes = bytes(pdf_raw)
 
         st.success("✅ WIR Report generated successfully with full project fields!")
         st.download_button(
